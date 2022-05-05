@@ -8,7 +8,7 @@ import Post from "./components/post/post";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
-  const user = false;
+  const user = true;
   return (
     <Router>
       <TopBar />

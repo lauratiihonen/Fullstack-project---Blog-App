@@ -11,6 +11,7 @@ const PostSchema= new mongoose.Schema({
     },
     photo: {
         type:String,
+        required:false
     },
     username: {
         type:String,
@@ -18,7 +19,8 @@ const PostSchema= new mongoose.Schema({
     },
     categories: {
         type:Array,
-    }
+        required:false
+    },
 }
 
 , {timestamps:true}

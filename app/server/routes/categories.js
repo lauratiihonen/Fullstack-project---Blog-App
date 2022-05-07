@@ -14,7 +14,6 @@ router.post("/", async (req,res) => {
 
 //GET CATEGORY
 router.get("/", async (req,res) => {
-    const newCat = new Category(req.body)
     try {
         const cats = await Category.find()
         res.status(200).json(cats)

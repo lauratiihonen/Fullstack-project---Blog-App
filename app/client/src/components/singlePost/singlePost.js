@@ -1,46 +1,99 @@
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "./singlePost.css";
+import axios from "axios"
+import { context } from "../../context/context";
 
 export default function SinglePost() {
+  const location = useLocation()
+  const path = location.pathname.split("/")[2]
+  const [post, setPost] = useState({})
+  const PF = "http://localhost:5000/images/"
+  const {user} = useContext(context)
+  const [title, setTitle] = useState("")
+  const [desc, setDesc] = useState("")
+  const [updateMode, setUpdateMode] = useState(false)
+
+
+  useEffect(()=> {
+    const getPost = async()=> {
+      const res = await axios.get("/posts/"+path)
+      setPost(res.data)
+      setTitle(res.data.title)
+      setDesc(res.data.desc)
+    }
+    getPost()
+  },[path])
+
+const handleDelete = async() => {
+  try {
+  await axios.delete(`/posts/${post._id}`, {data:{username:user.username}})
+  window.location.replace("/")
+} catch(err) {
+
+}
+}
+
+const handleUpdate = async() => {
+  try {
+  await axios.put(`/posts/${post._id}`, {username:user.username, title, desc})
+  setUpdateMode(false)
+} catch(err) {
+
+}
+}
+
   return (
     <div className="singlePost">
       <div className="singlePostWrapper">
+        {post.photo && (
         <img
-          className="singlePostImg"
-          src="https://images.pexels.com/photos/1410226/pexels-photo-1410226.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
+          src={PF + post.photo}
           alt=""
+          className="singlePostImg"
         />
-      </div>
+        )}
+        {
+          updateMode ? 
+          <input type="text" 
+          value={title} 
+          className ="singlePostTitleInput"
+          autoFocus
+          onChange={(e)=>setTitle(e.target.value)}
+          /> : (
+      
       <h1 className="singlePostTitle">
-        Donec hendrerit scelerisque ex eu placerat.
+        {title}
+        {post.username === user?.username && (
         <div className="singlePostEdit">
-          <i className="singlePostIcon fa-solid fa-pen-to-square"></i>
-          <i className="singlePostIcon fa-solid fa-trash-can"></i>
+          <i className="singlePostIcon fa-solid fa-pen-to-square" onClick={() => setUpdateMode(true)}></i>
+          <i className="singlePostIcon fa-solid fa-trash-can" onClick={handleDelete}></i>
         </div>
+        )}
       </h1>
+      )
+        }
       <div className="singlePostInfo">
         <span className="singlePostAuthor">
-          Author: <b>Laura</b>
+          Author: 
+          <Link to={`/?user=${post.username}`} className="link"><b>{post.username}</b></Link>
         </span>
-        <span className="singlePostDate">1 hour ago</span>
+        <span className="singlePostDate">{new Date(post.createdAt).toDateString()}</span>
       </div>
-      <p className="singlePostDesc">
-        Donec interdum condimentum sapien, vel pulvinar nulla accumsan nec.
-        Curabitur at efficitur nunc. Sed nec nunc pretium, posuere massa eget,
-        vulputate erat. In rutrum iaculis sem, ac aliquam nunc condimentum a.
-        Aliquam erat volutpat. Donec accumsan eros massa, nec ultrices lectus
-        consequat eu. Pellentesque vitae velit est. Etiam nec pretium nibh.
-        Phasellus consequat hendrerit lorem non consectetur. Nam sollicitudin
-        scelerisque velit, eget aliquet diam rhoncus ut. Nunc leo ipsum, iaculis
-        a feugiat ut, tempus non orci. Phasellus vel gravida ipsum. Ut odio
-        mauris, suscipit posuere dapibus cursus, iaculis eget mi. Pellentesque
-        luctus lacus nec sapien tempor tincidunt. Lorem ipsum dolor sit amet,
-        consectetur adipiscing elit. Suspendisse semper, felis id sollicitudin
-        dictum, lacus arcu viverra ex, vitae pretium dolor urna sed purus. Donec
-        hendrerit scelerisque ex eu placerat. Maecenas sed risus at neque
-        lobortis feugiat. Morbi efficitur dui nec porta porttitor. Pellentesque
-        et mi diam. Proin eget quam elit. Praesent rutrum pretium felis, vel
-        ultrices risus pellentesque nec.
+      {updateMode ? 
+      (<textarea 
+        className="singlePostDescInput" 
+        value={desc} 
+        onChange={(e)=>setDesc(e.target.value)}/>)
+      :
+      (<p className="singlePostDesc">
+        {desc}
       </p>
-    </div>
+      )}
+      {updateMode && (
+      <button className="singlePostButton" onClick={handleUpdate}>Update</button>
+    )}
+      </div>
+  </div>
   );
 }

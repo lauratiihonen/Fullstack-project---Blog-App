@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const user = require("../models/user")
+const User = require("../models/user")
 const Post = require("../models/Post")
 
 
@@ -79,7 +79,7 @@ router.get("/", async(req, res) => {
         if(username) {
             posts = await Post.find({username})
         } else if (catName) {
-            posts = await Post.find({categories: {$in:[catName]}})
+            posts = await Post.find({categories: {$in:[catName]},})
         } else {
             posts = await Post.find()
         }

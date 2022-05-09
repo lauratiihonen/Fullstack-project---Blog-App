@@ -1,7 +1,6 @@
 const supertest = require('supertest')
 const {test, expect} = require('@jest/globals')
-const express = require('express')
-const app = express()
+const app = require('../index')
 
 
 //TEST SIGNUP
@@ -13,9 +12,9 @@ test('POST /server/auth/signup', async () => {
     }
 
     const response = await supertest(app)
-    .post('/server/auth/signup')
-    .set('Accept', 'application/json')
-    .send(data)
+        .post('/server/auth/signup')
+        .set('Accept', 'application/json')
+        .send(data)
 
     console.log(response)
     expect(response.status).toEqual(200)
@@ -125,4 +124,3 @@ test('POST /server/auth/login', async () => {
     expect(response.body.token).toBeTruthy()
     expect(response.body.userId).toBeTruthy()
 })
-

@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/user")
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 //signup
 router.post("/signup", async(req,res)=> {
@@ -15,9 +15,11 @@ router.post("/signup", async(req,res)=> {
         })
 
         const user = await newUser.save()
-        res.status(200).json(user);
+
+        return res.status(200).json(user);
+        
     } catch(err){
-        res.status(500).json(err)
+      return res.status(500).json(err)
     }
 })
 
@@ -31,10 +33,10 @@ router.post("/login", async (req,res) => {
         !validate && res.status(400).json("Wrong credentials")
 
         const {password, ...others} = user._doc
-        res.status(200).json(others)
-
+        
+        return res.status(200).json(others)
     }catch (err){
-        res.status(500).json(err)
+        //return res.status(500).json(err)
     }
 })
 

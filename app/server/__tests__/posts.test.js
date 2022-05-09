@@ -1,13 +1,7 @@
 const {beforeAll, describe, it, expect} = require('@jest/globals')
 const supertest = require ('supertest')
-const express = require('express')
-const app = express()
+const app = require('../index');
 
-
-const loggedInUser = {
-    username: '',
-    token: ''
-}
 
 beforeAll(async () => {
     const data = {
@@ -16,13 +10,14 @@ beforeAll(async () => {
     };
   
     const response = await supertest(app)
-      .post("/server/auth/signup")
+      .post("/server/auth/login")
       .set("Accept", "application/json")
       .send(data);
-    loggedInUser.userId = response.body.userId;
-    loggedInUser.username = response.body.username;
-    loggedInUser.token = response.body.token;
+
+      
+    expect(response.status).toEqual(200)
   });
+  
   
   //TEST CREATE POST
   describe("create new post", () => {
@@ -30,19 +25,20 @@ beforeAll(async () => {
       const post = {
         title: "test title",
         desc: "testing description",
-        username: loggedInUser.userId,
+        username: 'laura'
       };
       const response = await supertest(app)
         .post("/server/posts")
-        .set("Authorization", "Bearer" + loggedInUser.token)
+        .set("Authorization", "Bearer" + 'pass')
         .set("Accept", "application/json")
         .send(post);
-      console.log(response);
+
       expect(response.status).toEqual(200);
-      expect(response.body.post.id).toBeTruthy();
-      expect(response.body.post.title).toEqual("test title");
-      expect(response.body.post.desc).toEqual("testing description");
-      expect(response.body.post.username).toEqual(loggedInUser.userId);
+      expect(response.body._id).toBeTruthy();
+      expect(response.body.title).toEqual("test title");
+      expect(response.body.desc).toEqual("testing description");
+      expect(response.body.username).toEqual('laura');
+      testPostId = response.body._id
     })
   })
 
@@ -53,18 +49,18 @@ describe("update post", () => {
       const post = {
         title: "test title update",
         desc: "testing description update",
-        username: loggedInUser.userId,
+        username: 'laura'
       };
       const response = await supertest(app)
-        .post("/server/posts/62742396c96e9623691b7703")
-        .set("Authorization", "Bearer" + loggedInUser.token)
+        .put(`/server/posts/${testPostId}`)
+        .set("Authorization", "Bearer" + 'pass')
         .set("Accept", "application/json")
         .send(post);
-      console.log(response);
+ 
       expect(response.status).toEqual(200);
-      expect(response.body.post.title).toBeTruthy();
-      expect(response.body.post.title).toEqual("test title update");
-      expect(response.body.post.desc).toEqual("testing description update");
+      expect(response.body._id).toBeTruthy();
+      expect(response.body.title).toEqual("test title update");
+      expect(response.body.desc).toEqual("testing description update");
     })
   })
 
@@ -72,14 +68,19 @@ describe("update post", () => {
   //TEST DELETE POST
   describe("delete post", () => {
     it("should delete the post", async () => {
+      const post = {
+        title: "test title update",
+        desc: "testing description update",
+        username: 'laura'
+      };
       const response = await supertest(app)
-        .delete("/server/posts/62742396c96e9623691b7703")
-        .set("Authorization", "Bearer" + loggedInUser.token)
+        .delete(`/server/posts/${testPostId}`)
+        .set("Authorization", "Bearer" + 'pass')
         .set("Accept", "application/json")
+        .send(post);
+
       console.log(response);
       expect(response.status).toEqual(200);
-      expect(response.body.message).toEqual("Post has been deleted");
+      expect(response.body).toEqual("Post has been deleted");
     })
   })
-
-  

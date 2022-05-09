@@ -1,6 +1,7 @@
 const supertest = require('supertest')
 const {test, expect} = require('@jest/globals')
-const app = require('../index')
+const app = require('../index');
+const user = require('../models/user');
 
 
 //TEST SIGNUP
@@ -16,13 +17,14 @@ test('POST /server/auth/signup', async () => {
         .set('Accept', 'application/json')
         .send(data)
 
-    console.log(response)
     expect(response.status).toEqual(200)
     expect(response.body.email).toEqual('matti@email.com')
     expect(response.body.username).toEqual('matti')
-    expect(response.body.token).toBeTruthy()
-    expect(response.body.userId).toBeTruthy()
+    expect(response.body._id).toBeTruthy()
+    expect(response.body.password).toBeTruthy()
+    testUserId = response.body._id
 })
+
 
 //TEST SIGNUP WITH USERNAME THAT ALREADY EXISTS
 test('POST /server/auth/signup', async () => {
@@ -37,12 +39,8 @@ test('POST /server/auth/signup', async () => {
     .set('Accept', 'application/json')
     .send(data)
 
-    console.log(response)
-    expect(response.status).toEqual(200)
-    expect(response.body.email).toEqual('matti@email.com')
-    expect(response.body.username).toEqual('matti')
-    expect(response.body.token).toBeTruthy()
-    expect(response.body.userId).toBeTruthy()
+    expect(response.status).toEqual(500)
+
 })
 
 //TEST SIGNUP WITH EMAIL THAT ALREADY EXISTS
@@ -58,13 +56,10 @@ test('POST /server/auth/signup', async () => {
     .set('Accept', 'application/json')
     .send(data)
 
-    console.log(response)
-    expect(response.status).toEqual(200)
-    expect(response.body.email).toEqual('matti@email.com')
-    expect(response.body.username).toEqual('matti')
-    expect(response.body.token).toBeTruthy()
-    expect(response.body.userId).toBeTruthy()
+    expect(response.status).toEqual(500)
+
 })
+
 
 //TEST LOGIN
 test('POST /server/auth/login', async () => {
@@ -78,11 +73,9 @@ test('POST /server/auth/login', async () => {
     .set('Accept', 'application/json')
     .send(data)
 
-    console.log(response)
     expect(response.status).toEqual(200)
     expect(response.body.username).toEqual('matti')
-    expect(response.body.token).toBeTruthy()
-    expect(response.body.userId).toBeTruthy()
+    expect(response.body._id).toBeTruthy()
 })
 
 
@@ -98,11 +91,8 @@ test('POST /server/auth/login', async () => {
     .set('Accept', 'application/json')
     .send(data)
 
-    console.log(response)
     expect(response.status).toEqual(400)
-    expect(response.body.username).toEqual('matti')
-    expect(response.body.token).toBeTruthy()
-    expect(response.body.userId).toBeTruthy()
+
 })
 
 
@@ -118,9 +108,11 @@ test('POST /server/auth/login', async () => {
     .set('Accept', 'application/json')
     .send(data)
 
-    console.log(response)
     expect(response.status).toEqual(400)
-    expect(response.body.username).toEqual('matti')
-    expect(response.body.token).toBeTruthy()
-    expect(response.body.userId).toBeTruthy()
+})
+
+
+
+test('delete test user', async () => {
+    await user.findByIdAndDelete(testUserId)
 })

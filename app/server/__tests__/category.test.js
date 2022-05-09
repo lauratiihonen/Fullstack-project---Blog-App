@@ -1,3 +1,7 @@
+const supertest = require('supertest')
+const {test, expect} = require('@jest/globals')
+const app = require('../index');
+const Category = require('../models/category')
 
 
 //TEST NEW CATEGORY
@@ -11,9 +15,10 @@ test('POST /server/categories', async () => {
     .set('Accept', 'application/json')
     .send(data)
 
-    console.log(response)
-    expect(response.status).toEqual(400)
-    expect(response.body.category).toEqual('cats')
+    expect(response.status).toEqual(200)
+    expect(response.body.name).toEqual('cats')
+    expect(response.body._id).toBeTruthy()
+    testCatId = response.body._id
 })
 
 //TEST GET ALL CATEGORIES
@@ -23,6 +28,11 @@ test('GET /server/categories', async () => {
     .get('/server/categories')
     .expect(200)
     .then((response) => {
-        expect(Array.isArray(response.body.categories)).toBeTruthy()
+        expect(Array.isArray(response.body)).toBeTruthy()
     })
+})
+
+
+test('delete test category', async () => {
+    await Category.findByIdAndDelete(testCatId)
 })

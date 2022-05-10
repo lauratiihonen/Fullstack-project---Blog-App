@@ -1,11 +1,15 @@
-Blog Web Application
+**Blog Web Application**
 
 *General information*
 
 Owner: Laura Tiihonen
+
 Description: Project for a Fullstack course
 Information: Made using MERN framework: MongoDB, Express.js, React.js and Nodejs. Backend test done with Jest and frontend tests with Cypress.
+
 Link to heroku:
+
+
 
 *Installation and use*
 

@@ -37,5 +37,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000/server/"
+  "proxy": "http://localhost:5000/server/",
+  "devDependencies": {
+    "cypress": "^9.6.1"
+  }
 }

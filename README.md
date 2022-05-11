@@ -15,14 +15,17 @@ Link to heroku https://laurasblogapp.herokuapp.com/
 ## *Installation and use*
 
 In the project directory, run:
+```bash
 npm start
-
+```
 backend test:
+```bash
 npm test
-
+```
 frontend test:
+```bash
 npx cypress open
-
+```
 -----
 
 ## **original plan**

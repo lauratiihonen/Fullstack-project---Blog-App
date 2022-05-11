@@ -31,9 +31,15 @@ npx cypress open
 ## **original plan**
 
 I will create a blog app where users can
+
 • Login/Signup to the application
+
 • Create articles
+
 • View list of all the articles
+
 • Edit/Delete own articles
+
 • Add comment to the articles
+
 And maybe add more stuff depending how much I have time.

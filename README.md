@@ -10,6 +10,8 @@ Information: Made using MERN framework: MongoDB, Express.js, React.js and Nodejs
 
 Link to heroku https://laurasblogapp.herokuapp.com/
 
+----
+
 *Installation and use*
 
 In the project directory, run:
@@ -23,7 +25,7 @@ npx cypress open
 
 -----
 
-*original plan*
+**original plan**
 
 I will create a blog app where users can
 • Login/Signup to the application

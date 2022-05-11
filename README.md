@@ -1,6 +1,6 @@
-#**Blog Web Application**
+# **Blog Web Application**
 
-##*General information*
+## *General information*
 
 Owner: Laura Tiihonen
 
@@ -12,7 +12,7 @@ Link to heroku https://laurasblogapp.herokuapp.com/
 
 ----
 
-##*Installation and use*
+## *Installation and use*
 
 In the project directory, run:
 npm start
@@ -25,7 +25,7 @@ npx cypress open
 
 -----
 
-##**original plan**
+## **original plan**
 
 I will create a blog app where users can
 • Login/Signup to the application

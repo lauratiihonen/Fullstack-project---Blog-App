@@ -28,7 +28,7 @@ npx cypress open
 ```
 -----
 
-## **original plan**
+## **Original plan draft**
 
 I will create a blog app where users can
 

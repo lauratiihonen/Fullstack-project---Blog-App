@@ -16,6 +16,9 @@ Link to heroku https://laurasblogapp.herokuapp.com/
 
 In the project directory, run:
 ```bash
+npm install
+```
+```bash
 npm start
 ```
 backend test:
